@@ -6,3 +6,5 @@
 /nytprof*
 .*.sw[a-z]
 /MooseX-Storage-*
+.latest
+.ackrc

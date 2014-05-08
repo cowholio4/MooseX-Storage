@@ -49,6 +49,7 @@ sub expand_object {
     # mark the root object as seen ...
     $self->seen->{refaddr $data} = undef;
 
+
     $self->map_attributes('expand_attribute', $data, \%options);
     return $self->storage;
 }
@@ -58,14 +59,16 @@ sub expand_object {
 sub collapse_attribute {
     my ($self, $attr, $options)  = @_;
     my $value = $self->collapse_attribute_value($attr, $options);
-    return if !defined($value);
+    
+    return unless $attr->has_value($self->object);
     $self->storage->{$attr->name} = $value;
 }
 
 sub expand_attribute {
     my ($self, $attr, $data, $options)  = @_;
+    return unless exists $data->{$attr->name};
     my $value = $self->expand_attribute_value($attr, $data->{$attr->name}, $options);
-    $self->storage->{$attr->name} = defined $value ? $value : return;
+    $self->storage->{$attr->name} = $value;
 }
 
 sub collapse_attribute_value {
